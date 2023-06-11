@@ -5,9 +5,26 @@
         my_puzzlehash ; when a coin is spent, it is "destroyed"; we need our own puzzlehash to recreate the coin
      )
 
+    (include condition_codes.clib)
+
     ; to make this coin unique to ourselves, we need to define the following two constants:
     (defconstant TARGET_AMOUNT 500) ; 500 mojos - this is our savings goal - the piggibank count will not allow any subtraction of value until it at least reached this amount
     (defconstant CACH_OUT_PUZZLE_HASH 0xcafef00d) ; address where the money is sent when we reach the savings goal, e.g., it could be our own or some charity address
+
+    (defun-inline recreate_self (my_amount new_amount my_puzzlehash)
+        ; return list of conditions
+        (list
+            ; and inside the list we are going to have more lists - usually we return a list of lists
+            (list CREATE_COIN my_puzzlehash new_amount)
+        )
+    )
+
+    (defun-inline cash_out (CACH_OUT_PUZZLE_HASH my_amount new_amount my_puzzlehash)
+        (list
+            (list CREATE_COIN CACH_OUT_PUZZLE_HASH new_amount) ; we are just sending the entire new amount
+            (list CREATE_COIN my_puzzlehash 0) ; create the piggybank coin again
+        )
+    )
 
     ; main
     ; this is a main entry point
@@ -18,9 +35,9 @@
         ; if yes, do stuff
         (if (> new_amount TARGET_AMOUNT)
             ; if yes, do cash out logic
-            ; cash_out
-            ; otherwise, just recreate self
-            ; recreate_self
+            (cash_out CACH_OUT_PUZZLE_HASH my_amount new_amount my_puzzlehash) ; requires cach out puzzle hash and the other arguments
+            ; otherwise, just recreate self since we havn't reach the savings goal
+            (recreate_self my_amount new_amount my_puzzlehash) ; pass everything that the spender given to us
         )
         ; otherwise, raise
         (x) ; fail
