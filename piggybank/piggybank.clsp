@@ -16,6 +16,9 @@
         (list
             ; and inside the list we are going to have more lists - usually we return a list of lists
             (list CREATE_COIN my_puzzlehash new_amount)
+            (list ASSERT_MY_AMOUNT my_amount) ; secure the coin from malicious changes
+            (list ASSERT_MY_PUZZLEHASH my_puzzlehash) ; secure the coin from malicious changes
+            (list CREATE_COIN_ANNOUNCEMENT new_amount) ; secure new_amount value
         )
     )
 
@@ -23,6 +26,9 @@
         (list
             (list CREATE_COIN CACH_OUT_PUZZLE_HASH new_amount) ; we are just sending the entire new amount
             (list CREATE_COIN my_puzzlehash 0) ; create the piggybank coin again
+            (list ASSERT_MY_AMOUNT my_amount) ; secure the coin from malicious changes
+            (list ASSERT_MY_PUZZLEHASH my_puzzlehash) ; secure the coin from malicious changes
+            (list CREATE_COIN_ANNOUNCEMENT new_amount) ; secure new_amount value
         )
     )
 
