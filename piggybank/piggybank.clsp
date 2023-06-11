@@ -1,0 +1,28 @@
+(mod (
+        ; below are the solution values that the spender is going to be passing in:
+        my_amount ; current amount of the coin that is being spent
+        new_amount ; new amount should be greater than the current amount
+        my_puzzlehash ; when a coin is spent, it is "destroyed"; we need our own puzzlehash to recreate the coin
+     )
+
+    ; to make this coin unique to ourselves, we need to define the following two constants:
+    (defconstant TARGET_AMOUNT 500) ; 500 mojos - this is our savings goal - the piggibank count will not allow any subtraction of value until it at least reached this amount
+    (defconstant CACH_OUT_PUZZLE_HASH 0xcafef00d) ; address where the money is sent when we reach the savings goal, e.g., it could be our own or some charity address
+
+    ; main
+    ; this is a main entry point
+    ; we need to check two things:
+    ; - new_amount is greater than my_amount
+    ; - whether or not we reached the TARGET_AMOUNT
+    (if (> new_amount my_amount)
+        ; if yes, do stuff
+        (if (> new_amount TARGET_AMOUNT)
+            ; if yes, do cash out logic
+            ; cash_out
+            ; otherwise, just recreate self
+            ; recreate_self
+        )
+        ; otherwise, raise
+        (x) ; fail
+    )
+)
