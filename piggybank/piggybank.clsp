@@ -1,4 +1,8 @@
 (mod (
+        ; pre-committing to the target amount and the cach out address through Currying
+        ; those will be hashed with the puzzle at the time of the coin creation
+        TARGET_AMOUNT
+        CACH_OUT_PUZZLE_HASH
         ; below are the solution values that the spender is going to be passing in:
         my_amount ; current amount of the coin that is being spent
         new_amount ; new amount should be greater than the current amount
@@ -6,10 +10,6 @@
      )
 
     (include condition_codes.clib)
-
-    ; to make this coin unique to ourselves, we need to define the following two constants:
-    (defconstant TARGET_AMOUNT 500) ; 500 mojos - this is our savings goal - the piggibank count will not allow any subtraction of value until it at least reached this amount
-    (defconstant CACH_OUT_PUZZLE_HASH 0xcafef00d) ; address where the money is sent when we reach the savings goal, e.g., it could be our own or some charity address
 
     (defun-inline recreate_self (my_amount new_amount my_puzzlehash)
         ; return list of conditions
